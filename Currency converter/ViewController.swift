@@ -103,14 +103,30 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         return value
     }
     
+    // Except same currencies in picker
+    func currenciesExceptBase() -> [String] {
+        var currenciesExceptBase = currencies
+        currenciesExceptBase.remove(at: pickerFrom.selectedRow(inComponent: 0))
+        
+        return currenciesExceptBase
+    }
+    
 // Releases of protocols
     
     // UIPickerViewDelegate
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView === pickerTo {
+            return self.currenciesExceptBase()[row]
+        }
+        
         return currencies[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView === pickerFrom {
+            self.pickerTo.reloadAllComponents()
+        }
+        
         let baseCurrencyIndex = self.pickerFrom.selectedRow(inComponent: 0)
         let toCuttencyIndex = self.pickerTo.selectedRow(inComponent: 0)
         
@@ -132,6 +148,10 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView === pickerTo {
+            return self.currenciesExceptBase().count
+        }
+        
         return currencies.count
     }
     
