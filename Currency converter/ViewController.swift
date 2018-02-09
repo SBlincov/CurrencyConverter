@@ -160,7 +160,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             let json = try JSONSerialization.jsonObject(with: data!, options: []) as? Dictionary<String, Any>
             
             if let parsedJSON = json {
-                //print("\(parsedJSON)")
 
                 if let rates = parsedJSON["rates"] as? Dictionary<String, Double>{
                     for (signCurrency, _) in rates{
@@ -192,7 +191,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }
     }
     
-// END getting list
+// END get curency list
     
     
     // Except same currencies in picker
@@ -223,8 +222,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             })
         }
     }
-    
-    //
     
 // Releases of protocols
     
