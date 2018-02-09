@@ -110,6 +110,22 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         return currencies[row]
     }
     
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let baseCurrencyIndex = self.pickerFrom.selectedRow(inComponent: 0)
+        let toCuttencyIndex = self.pickerTo.selectedRow(inComponent: 0)
+        
+        let baseCurrency = self.currencies[baseCurrencyIndex]
+        let toCurrency = self.currencies[toCuttencyIndex]
+        
+        self.retrieveCurrencyRate(baseCurrency: baseCurrency, toCurrency: toCurrency) {[weak self] (value) in
+            DispatchQueue.main.async(execute: {
+                if let strongSelf = self {
+                    strongSelf.label.text = value
+                }
+            })
+        }
+    }
+    
     // UIPickerViewDataSource
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
