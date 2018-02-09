@@ -30,6 +30,8 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         self.pickerTo.delegate = self
         self.pickerFrom.delegate = self
         
+        self.activityIndicator.hidesWhenStopped = true
+        
         self.retrieveCurrencyRate(baseCurrency: "USD", toCurrency: "RUB") {[weak self] (value) in
             DispatchQueue.main.async(execute: {
                 if let strongSelf = self {
