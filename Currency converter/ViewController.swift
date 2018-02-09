@@ -30,8 +30,12 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         self.pickerTo.delegate = self
         self.pickerFrom.delegate = self
         
-        self.requestCurrencyRates(baseCurrency: "RUB") { (data, error) in
-            
+        self.retrieveCurrencyRate(baseCurrency: "USD", toCurrency: "RUB") {[weak self] (value) in
+            DispatchQueue.main.async(execute: {
+                if let strongSelf = self {
+                    strongSelf.label.text = value
+                }
+            })
         }
     }
 
@@ -40,6 +44,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         // Dispose of any resources that can be recreated.
     }
 
+    // Get currency rates from server
     func requestCurrencyRates(baseCurrency : String, parseHandler : @escaping (Data?, Error?) -> Void) {
         let url = URL(string: "https://api.fixer.io/latest?base=" + baseCurrency)!
         
@@ -51,14 +56,59 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         dataTask.resume()
     }
     
-//Releases of protocols
+    // Retrieve currency rate from response
+    func retrieveCurrencyRate(baseCurrency: String, toCurrency: String, completion: @escaping (String) -> Void) {
+        self.requestCurrencyRates(baseCurrency: baseCurrency) { [weak self] (data, error) in
+            var string = "No currency retrieved!"
+            
+            if let currentError = error {
+                string = currentError.localizedDescription
+            } else {
+                if let strongSelf = self {
+                    string = strongSelf.parseCurrencyRatesResponse(data: data, toCurrency: toCurrency)
+                }
+            }
+            
+            completion(string)
+        }
+    }
     
-    //UIPickerViewDelegate
+    // Parse JSON object
+    func parseCurrencyRatesResponse(data: Data?, toCurrency: String) -> String {
+        var value : String = ""
+        
+        do{
+            let json = try JSONSerialization.jsonObject(with: data!, options: []) as? Dictionary<String, Any>
+            
+            if let parsedJSON = json {
+                print("\(parsedJSON)")
+                if let rates = parsedJSON["rates"] as? Dictionary<String, Double>{
+                    if let rate = rates[toCurrency] {
+                        value = "\(rate)"
+                    } else {
+                        value = "No rate for currency \"\(toCurrency)\" found"
+                    }
+                } else {
+                    value = "No \"rates\" field found"
+                }
+            } else {
+                value = "No JSON value parsed"
+            }
+        } catch {
+            value = error.localizedDescription
+        }
+        
+        return value
+    }
+    
+// Releases of protocols
+    
+    // UIPickerViewDelegate
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return currencies[row]
     }
     
-    //UIPickerViewDataSource
+    // UIPickerViewDataSource
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
