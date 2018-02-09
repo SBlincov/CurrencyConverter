@@ -18,6 +18,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     let currencies = ["RUB", "USD", "EUR"]
+    var avalibleCurrencies = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,24 +147,21 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             
             if let parsedJSON = json {
                 print("\(parsedJSON)")
-/*
+
                 if let rates = parsedJSON["rates"] as? Dictionary<String, Double>{
-                    if let rate = rates[toCurrency] {
-                        value = "\(rate)"
-                    } else {
-                        value = "No rate for currency \"\(toCurrency)\" found"
+                    for (signCurrency, _) in rates{
+                            avalibleCurrencies.append(signCurrency)
                     }
                 } else {
-                    value = "No \"rates\" field found"
+                    value = "List of currencies not found"
                 }
- */
             } else {
                 value = "No JSON value parsed"
             }
         } catch {
             value = error.localizedDescription
         }
-        
+        print(avalibleCurrencies)
         return value
     }
     
