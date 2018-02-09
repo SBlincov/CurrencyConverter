@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,35 +19,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Currency converter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="POh-ig-oui">
-                                <rect key="frame" x="0.0" y="158" width="375" height="41"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Currency converter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="POh-ig-oui">
+                                <rect key="frame" x="0.0" y="158" width="375" height="36"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Special for Tinkoff Fintech School" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSu-nq-Da5">
-                                <rect key="frame" x="0.0" y="598" width="375" height="38"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Special for Tinkoff Fintech School" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSu-nq-Da5">
+                                <rect key="frame" x="0.0" y="606.5" width="375" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Developer: @SBlincov" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OJB-hF-y1o">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Developer: @SBlincov" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OJB-hF-y1o">
                                 <rect key="frame" x="0.0" y="632" width="375" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="LaunchScreen Logo" translatesAutoresizingMaskIntoConstraints="NO" id="te6-HL-LiR">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen Logo" translatesAutoresizingMaskIntoConstraints="NO" id="te6-HL-LiR">
                                 <rect key="frame" x="88" y="240" width="199" height="187"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="te6-HL-LiR" secondAttribute="trailing" constant="72" id="1ys-bz-p1m"/>
+                            <constraint firstAttribute="bottom" secondItem="OJB-hF-y1o" secondAttribute="bottom" constant="14" id="3lg-pr-m4I"/>
+                            <constraint firstAttribute="bottom" secondItem="XSu-nq-Da5" secondAttribute="bottom" constant="31" id="4g8-nG-ink"/>
                             <constraint firstItem="POh-ig-oui" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="5rA-dE-ZXP"/>
+                            <constraint firstItem="te6-HL-LiR" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="72" id="8Wc-e8-nGV"/>
+                            <constraint firstItem="POh-ig-oui" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="158" id="GGR-36-7lK"/>
                             <constraint firstItem="XSu-nq-Da5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="JYT-fa-9bR"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OJB-hF-y1o" secondAttribute="trailing" id="Kwl-Vk-z44"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="POh-ig-oui" secondAttribute="trailing" id="Nih-QS-XnU"/>
+                            <constraint firstItem="te6-HL-LiR" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="topMargin" constant="220" id="Oxj-Sa-Olv"/>
+                            <constraint firstAttribute="bottom" secondItem="XSu-nq-Da5" secondAttribute="bottom" constant="40" id="cnd-h5-wFP"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="te6-HL-LiR" secondAttribute="bottom" constant="240" id="d4u-kQ-6eB"/>
+                            <constraint firstAttribute="bottom" secondItem="OJB-hF-y1o" secondAttribute="bottom" constant="14" id="dah-JA-4rm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XSu-nq-Da5" secondAttribute="trailing" id="mjI-gx-Q6O"/>
                             <constraint firstItem="OJB-hF-y1o" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pyZ-Tk-qEi"/>
                         </constraints>
