@@ -29,6 +29,10 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         self.pickerTo.delegate = self
         self.pickerFrom.delegate = self
+        
+        self.requestCurrencyRates(baseCurrency: "RUB") { (data, error) in
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,6 +40,16 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         // Dispose of any resources that can be recreated.
     }
 
+    func requestCurrencyRates(baseCurrency : String, parseHandler : @escaping (Data?, Error?) -> Void) {
+        let url = URL(string: "https://api.fixer.io/latest?base=" + baseCurrency)!
+        
+        let dataTask = URLSession.shared.dataTask(with: url) {
+            (dataReceived, response, error) in
+            parseHandler(dataReceived, error)
+        }
+        
+        dataTask.resume()
+    }
     
 //Releases of protocols
     
