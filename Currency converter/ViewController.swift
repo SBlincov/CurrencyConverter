@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        self.label.text = "Тут будет курс"
     }
 
     override func didReceiveMemoryWarning() {
