@@ -32,13 +32,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         self.activityIndicator.hidesWhenStopped = true
         
-        self.retrieveCurrencyRate(baseCurrency: "USD", toCurrency: "RUB") {[weak self] (value) in
-            DispatchQueue.main.async(execute: {
-                if let strongSelf = self {
-                    strongSelf.label.text = value
-                }
-            })
-        }
+        self.requestCurrentCurrencyRate()
     }
 
     override func didReceiveMemoryWarning() {
@@ -111,6 +105,23 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         return currenciesExceptBase
     }
     
+    // Request current currency rate
+    func requestCurrentCurrencyRate() {
+        let baseCurrencyIndex = self.pickerFrom.selectedRow(inComponent: 0)
+        let toCuttencyIndex = self.pickerTo.selectedRow(inComponent: 0)
+        
+        let baseCurrency = self.currencies[baseCurrencyIndex]
+        let toCurrency = self.currencies[toCuttencyIndex]
+        
+        self.retrieveCurrencyRate(baseCurrency: baseCurrency, toCurrency: toCurrency) {[weak self] (value) in
+            DispatchQueue.main.async(execute: {
+                if let strongSelf = self {
+                    strongSelf.label.text = value
+                }
+            })
+        }
+    }
+    
 // Releases of protocols
     
     // UIPickerViewDelegate
@@ -127,19 +138,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             self.pickerTo.reloadAllComponents()
         }
         
-        let baseCurrencyIndex = self.pickerFrom.selectedRow(inComponent: 0)
-        let toCuttencyIndex = self.pickerTo.selectedRow(inComponent: 0)
-        
-        let baseCurrency = self.currencies[baseCurrencyIndex]
-        let toCurrency = self.currencies[toCuttencyIndex]
-        
-        self.retrieveCurrencyRate(baseCurrency: baseCurrency, toCurrency: toCurrency) {[weak self] (value) in
-            DispatchQueue.main.async(execute: {
-                if let strongSelf = self {
-                    strongSelf.label.text = value
-                }
-            })
-        }
+        self.requestCurrentCurrencyRate()
     }
     
     // UIPickerViewDataSource
