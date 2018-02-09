@@ -161,6 +161,8 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             value = error.localizedDescription
         }
         currencies = avalibleCurrencies
+        pickerTo.reloadAllComponents()
+        pickerFrom.reloadAllComponents()
         return value
     }
     
