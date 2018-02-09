@@ -17,7 +17,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-    let currencies = ["RUB", "USD", "EUR"]
+    var currencies = ["RUB", "USD", "EUR"]
     var avalibleCurrencies = [String]()
     
     override func viewDidLoad() {
@@ -31,9 +31,8 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         self.activityIndicator.hidesWhenStopped = true
         
-        //self.requestCurrentCurrencyRate()
         self.requestCurrentCurrencyList()
-        
+        self.requestCurrentCurrencyRate()
     }
     
     override func didReceiveMemoryWarning() {
@@ -138,7 +137,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         }
     }
     
-    // Parse JSON object
+    // Parse JSON object with list
     func parseCurrencyListResponse(data: Data?) -> String {
         var value : String = ""
         
@@ -146,7 +145,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             let json = try JSONSerialization.jsonObject(with: data!, options: []) as? Dictionary<String, Any>
             
             if let parsedJSON = json {
-                print("\(parsedJSON)")
+                //print("\(parsedJSON)")
 
                 if let rates = parsedJSON["rates"] as? Dictionary<String, Double>{
                     for (signCurrency, _) in rates{
@@ -161,7 +160,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         } catch {
             value = error.localizedDescription
         }
-        print(avalibleCurrencies)
+        currencies = avalibleCurrencies
         return value
     }
     
