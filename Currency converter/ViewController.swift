@@ -30,7 +30,9 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         self.activityIndicator.hidesWhenStopped = true
         
-        self.requestCurrentCurrencyRate()
+        //self.requestCurrentCurrencyRate()
+        self.requestCurrentCurrencyList()
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -104,6 +106,80 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         return value
     }
+    
+// Get currency list
+    // Get avaliable rates
+    func requestAvalibleRates(parseHandler : @escaping (Data?, Error?) -> Void) {
+        let url = URL(string: "https://api.fixer.io/latest")!
+        
+        let dataTask = URLSession.shared.dataTask(with: url) {
+            (dataReceived, response, error) in
+            parseHandler(dataReceived, error)
+        }
+        
+        dataTask.resume()
+    }
+    
+    // Retrieve currency list from response
+    func retrieveCurrencyList(completion: @escaping (String) -> Void) {
+        self.requestAvalibleRates() { [weak self] (data, error) in
+            var string = "List of currency didn't retrieved!"
+            
+            if let currentError = error {
+                string = currentError.localizedDescription
+            } else {
+                if let strongSelf = self {
+                    string = strongSelf.parseCurrencyListResponse(data: data)
+                }
+            }
+            
+            completion(string)
+        }
+    }
+    
+    // Parse JSON object
+    func parseCurrencyListResponse(data: Data?) -> String {
+        var value : String = ""
+        
+        do{
+            let json = try JSONSerialization.jsonObject(with: data!, options: []) as? Dictionary<String, Any>
+            
+            if let parsedJSON = json {
+                print("\(parsedJSON)")
+/*
+                if let rates = parsedJSON["rates"] as? Dictionary<String, Double>{
+                    if let rate = rates[toCurrency] {
+                        value = "\(rate)"
+                    } else {
+                        value = "No rate for currency \"\(toCurrency)\" found"
+                    }
+                } else {
+                    value = "No \"rates\" field found"
+                }
+ */
+            } else {
+                value = "No JSON value parsed"
+            }
+        } catch {
+            value = error.localizedDescription
+        }
+        
+        return value
+    }
+    
+    // Request currency list
+    func requestCurrentCurrencyList() {
+        self.retrieveCurrencyList() {[weak self] (value) in
+            DispatchQueue.main.async(execute: {
+                if let strongSelf = self {
+                    strongSelf.label.text = value
+                }
+            })
+        }
+    }
+    
+// END getting list
+    
     
     // Except same currencies in picker
     func currenciesExceptBase() -> [String] {
