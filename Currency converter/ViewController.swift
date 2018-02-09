@@ -21,7 +21,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+            
         self.pickerTo.dataSource = self
         self.pickerFrom.dataSource = self
         
@@ -32,10 +32,20 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         self.requestCurrentCurrencyRate()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // Alert
+    func getAlert() -> Void {
+        let alert = UIAlertController(title: "SWIFT Hub", message: "This is message", preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (cancel) in
+            print("SUCCESSFULL")
+        }
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
     }
 
     // Get currency rates from server
@@ -123,6 +133,8 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
             })
         }
     }
+    
+    //
     
 // Releases of protocols
     
