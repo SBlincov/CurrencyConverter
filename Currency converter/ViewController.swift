@@ -31,8 +31,13 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         
         self.activityIndicator.hidesWhenStopped = true
         
-        self.requestCurrentCurrencyList()
-        self.requestCurrentCurrencyRate()
+        if Reachability.isConnectedToNetwork() == true {
+            self.requestCurrentCurrencyList()
+            self.requestCurrentCurrencyRate()
+        } else {
+            label.text = "No internet connection"
+            noInternetConnectionAlert()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -41,25 +46,30 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     }
     
     // Alert
-    func getAlert() -> Void {
-        let alert = UIAlertController(title: "SWIFT Hub", message: "This is message", preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { (cancel) in
-            print("SUCCESSFULL")
+    func noInternetConnectionAlert() -> Void {
+        let alert = UIAlertController(title: "No internet connection", message: "Connect to the internet and try again😉", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Okay", style: .default) { (cancel) in
+            print("Notification got")
         }
-        alert.addAction(cancel)
+        alert.addAction(okAction)
         self.present(alert, animated: true, completion: nil)
     }
 
     // Get currency rates from server
     func requestCurrencyRates(baseCurrency : String, parseHandler : @escaping (Data?, Error?) -> Void) {
-        let url = URL(string: "https://api.fixer.io/latest?base=" + baseCurrency)!
-        
-        let dataTask = URLSession.shared.dataTask(with: url) {
-            (dataReceived, response, error) in
-            parseHandler(dataReceived, error)
+        if Reachability.isConnectedToNetwork() == true {
+            let url = URL(string: "https://api.fixer.io/latest?base=" + baseCurrency)!
+            
+            let dataTask = URLSession.shared.dataTask(with: url) {
+                (dataReceived, response, error) in
+                parseHandler(dataReceived, error)
+            }
+            
+            dataTask.resume()
+        } else {
+            label.text = "No internet connection"
+            noInternetConnectionAlert()
         }
-        
-        dataTask.resume()
     }
     
     // Retrieve currency rate from response
@@ -110,14 +120,19 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
 // Get currency list
     // Get avaliable rates
     func requestAvalibleRates(parseHandler : @escaping (Data?, Error?) -> Void) {
-        let url = URL(string: "https://api.fixer.io/latest")!
+        if Reachability.isConnectedToNetwork() == true{
+            let url = URL(string: "https://api.fixer.io/latest")!
         
-        let dataTask = URLSession.shared.dataTask(with: url) {
-            (dataReceived, response, error) in
-            parseHandler(dataReceived, error)
+            let dataTask = URLSession.shared.dataTask(with: url) {
+                (dataReceived, response, error) in
+                parseHandler(dataReceived, error)
+            }
+        
+            dataTask.resume()
+        } else {
+            label.text = "No internet connection"
+            noInternetConnectionAlert()
         }
-        
-        dataTask.resume()
     }
     
     // Retrieve currency list from response
