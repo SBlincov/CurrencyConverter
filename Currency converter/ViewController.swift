@@ -22,8 +22,6 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.label.text = "Тут будет курс"
-        
         self.pickerTo.dataSource = self
         self.pickerFrom.dataSource = self
         
@@ -107,16 +105,20 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
     // Request current currency rate
     func requestCurrentCurrencyRate() {
+        self.activityIndicator.startAnimating()
+        self.label.text = ""
+        
         let baseCurrencyIndex = self.pickerFrom.selectedRow(inComponent: 0)
-        let toCuttencyIndex = self.pickerTo.selectedRow(inComponent: 0)
+        let toCurrencyIndex = self.pickerTo.selectedRow(inComponent: 0)
         
         let baseCurrency = self.currencies[baseCurrencyIndex]
-        let toCurrency = self.currencies[toCuttencyIndex]
+        let toCurrency = self.currenciesExceptBase()[toCurrencyIndex]
         
         self.retrieveCurrencyRate(baseCurrency: baseCurrency, toCurrency: toCurrency) {[weak self] (value) in
             DispatchQueue.main.async(execute: {
                 if let strongSelf = self {
                     strongSelf.label.text = value
+                    strongSelf.activityIndicator.stopAnimating()
                 }
             })
         }
@@ -129,7 +131,7 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
         if pickerView === pickerTo {
             return self.currenciesExceptBase()[row]
         }
-        
+ 
         return currencies[row]
     }
     
@@ -148,11 +150,12 @@ class ViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDele
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView === pickerTo {
-            return self.currenciesExceptBase().count
+           return self.currenciesExceptBase().count
         }
         
         return currencies.count
     }
+    
     
 }
 
